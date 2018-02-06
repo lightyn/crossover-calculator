@@ -1,0 +1,108 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<GridPane fx:controller="claimCalculator.Controller" hgap="10" vgap="10"
+          xmlns:fx="http://javafx.com/fxml">
+    <style>
+        -fx-padding: 10;
+    </style>
+    <GridPane hgap="10" vgap="10" GridPane.rowIndex="0"
+              style="
+                    -fx-border-style: solid inside;
+                    -fx-border-color: #999999;
+                    -fx-border-insets: 5;
+                    -fx-padding: 10;
+                    ">
+
+        <Label text="MCR Coinsurance Rate Year"
+               GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="inputMedicareRate"
+                  maxWidth="70"
+                  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Medicare Paid Amount"
+              GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputMedicarePaidAmount"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Text fx:id="inputMedicarePaidAmountError" text="Must be a whole number greater than zero"
+              GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+
+        <Label text="MCR Sequestration Amount"
+              GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputMedicareSequestrationAmount"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Text fx:id="inputMedicareSequestrationAmountError"
+              GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+
+        <Label text="Covered Days"
+              GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputCoveredDays"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Text fx:id="inputCoveredDaysError"
+              GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+
+        <Label text="Coinsurance Days"
+              GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputCoinsuranceDays"
+                   GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        <Text fx:id="inputCoinsuranceDaysError"
+              GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+
+        <Label text="Medicaid Rate"
+              GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputMedicaidRate"
+                   GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <Text fx:id="inputMedicaidRateError"
+              GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+
+        <Label text="Prorated Patient Liability"
+              GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <TextField fx:id="inputMedicaidPatientLiability"
+                   GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <Text fx:id="inputMedicaidPatientLiabilityError"
+              GridPane.rowIndex="6" GridPane.columnIndex="2"/>
+
+    </GridPane>
+    <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="150" alignment="CENTER">
+        <Button fx:id="calculateButton" text="Calculate"
+                minWidth="120"/>
+        <Button fx:id="resetButton" text="Reset" minWidth="120"/>
+    </HBox>
+    <GridPane hgap="10" vgap="10" GridPane.rowIndex="2"
+              style="
+                    -fx-border-style: solid inside;
+                    -fx-border-color: #999999;
+                    -fx-border-insets: 5;
+                    -fx-padding: 10;
+                    ">
+
+        <Label text="Medicare Per Diem"
+               GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="outputMedicarePerDiem" editable="false"
+                   maxHeight="8" focusTraversable="false"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Text fx:id="outputMedicarePerDiemError" text="Missing Required Fields"
+              style="-fx-fill: rgb(0,0,0,0);"
+              GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+
+        <Label text="Medicaid Owes"
+               GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="outputMedicaidNetOwed" editable="false"
+                   maxHeight="8" focusTraversable="false"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Text fx:id="outputMedicaidNetOwedError" text="Missing Required Fields"
+              style="-fx-fill: rgb(0,0,0,0);"
+              GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+
+        <Label text="Patient Owes"
+               GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="outputPatientOwed" editable="false"
+                   maxHeight="8" focusTraversable="false"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Text fx:id="outputPatientOwedError" text="Missing Required Fields"
+              style="-fx-fill: rgb(0,0,0,0);"
+              GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+
+    </GridPane>
+
+</GridPane>

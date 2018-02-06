@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="SHC Claims Calculator">
+    <output-path>$PROJECT_DIR$/out/artifacts/SHC_Claims_Calculator</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="claimCalculator.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="exe" />
+        <option name="title" value="Medicaid Part A Coinsurance Calculator" />
+        <option name="vendor" value="Signature Healthcare" />
+        <option name="version" value="1.0" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="SHC_Claims_Calculator.jar">
+        <element id="module-output" name="SHC Claims Calculator" />
+      </element>
+    </root>
+  </artifact>
+</component>
