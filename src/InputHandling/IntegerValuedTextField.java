@@ -1,4 +1,4 @@
-package claimCalculator;
+package InputHandling;
 
 
 import javafx.scene.control.TextField;
@@ -7,10 +7,10 @@ import javafx.scene.text.Text;
 /**
  * A Parsable Input Element with a stored value type of Integer.
  */
-public class IntegerParsableInputElement extends ParsableInputElement {
+public class IntegerValuedTextField extends ValuedTextField {
     private int integer;
 
-    public IntegerParsableInputElement(TextField textField, Text errorText) {
+    public IntegerValuedTextField(TextField textField, Text errorText) {
         super(errorText,textField);
         integer = 0;
     }
@@ -20,7 +20,7 @@ public class IntegerParsableInputElement extends ParsableInputElement {
         return integer;
     }
 
-    public void setValue(int integer) {
+    public void setValue(Integer integer) {
         this.integer = integer;
     }
 

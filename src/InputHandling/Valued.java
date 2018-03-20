@@ -1,4 +1,4 @@
-package claimCalculator;
+package InputHandling;
 
 /**Defines an Interface for an object that can return a value with the return type
  * deferred to the concrete implementation.

@@ -1,4 +1,4 @@
-package claimCalculator;
+package InputHandling;
 
 
 import javafx.scene.control.TextField;
@@ -7,14 +7,15 @@ import javafx.scene.text.Text;
 /**
  * A Parsable Input Element with a stored value type of Double.
  */
-public class DoubleParsableInputElement extends ParsableInputElement implements Valued {
+public class DoubleValuedTextField extends ValuedTextField {
     private double aDouble;
 
-    public DoubleParsableInputElement(TextField textField, Text errorText) {
+    public DoubleValuedTextField(TextField textField, Text errorText) {
         super(errorText,textField);
         aDouble = 0;
     }
 
+    @Override
     public Double getValue() {
         return aDouble;
     }
@@ -23,7 +24,8 @@ public class DoubleParsableInputElement extends ParsableInputElement implements 
         this.aDouble = aDouble;
     }
 
+    @Override
     public void parse() throws NumberFormatException {
-        aDouble = Double.parseDouble(super.getTextField().getText());
+        aDouble = Double.parseDouble(this.getTextField().getText());
     }
 }

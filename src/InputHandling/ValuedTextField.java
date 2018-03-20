@@ -1,35 +1,35 @@
-package claimCalculator;
+package InputHandling;
 
 
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-/**A JavaFX input element object capable of parsing and storing it's own value.
- * Allows a customized error text to be stored to be returned
- * to the user if needed.
+/**A TextField container class capable of parsing and storing its TextField's input value.
+ * This object acts as a container for a JavaFX TextField, the resolved value
+ * of its input, and an error text to be presented if the parsing of input fails.
  */
-abstract class ParsableInputElement implements Valued {
+public abstract class ValuedTextField implements Valued {
     private final Text errorText;
     private final TextField textField;
 
-    /**Constructs a new ParsableInputElement with specified error text.
+    /**Constructs a new ValuedTextField with specified error text.
      *
      * @param errorText a JavaFX Text used to relay element errors to the user.
      * @param textField a JavaFX TextField used to receive string input from user.
      */
-    ParsableInputElement(Text errorText, TextField textField) {
+    ValuedTextField(Text errorText, TextField textField) {
         this.textField = textField;
         this.errorText = errorText;
         errorText.setFill(Color.TRANSPARENT);
     }
 
-    /**Construct a new ParsableInputElement with default error text.
+    /**Construct a new InputHandling with default error text.
      *
      * @param textField a JavaFX TextField used to receive string input from user.
      */
     @SuppressWarnings("unused")
-    public ParsableInputElement(TextField textField) {
+    public ValuedTextField(TextField textField) {
         this.errorText = new Text();
         errorText.setText("Unspecified Error");
         this.textField = textField;
