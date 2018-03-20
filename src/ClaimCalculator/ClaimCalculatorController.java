@@ -1,5 +1,8 @@
-package claimCalculator;
+package ClaimCalculator;
 
+import InputHandling.DoubleValuedTextField;
+import InputHandling.IntegerValuedTextField;
+import InputHandling.ValuedTextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,23 +15,29 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-
 @SuppressWarnings("ALL")
-public class Controller {
-    private final LinkedList<ParsableInputElement> inputElements = new LinkedList<ParsableInputElement>();
-    private IntegerParsableInputElement coinsuranceDays;
-    private IntegerParsableInputElement coveredDays;
-    private DoubleParsableInputElement medicaidRate;
-    private DoubleParsableInputElement medicaidPatientLiability;
-    private DoubleParsableInputElement medicarePaidAmount;
+/**
+ *The controller initializes the control input elements; receives, validates,
+ * and handles user input, and propagates output information back to the user.
+ * This class is doing a little too much right now and validation/parsing could be
+ * passed to an external class.
+ */
+public class ClaimCalculatorController {
+
+    private final LinkedList<ValuedTextField> inputElements = new LinkedList<ValuedTextField>();
+    private IntegerValuedTextField coinsuranceDaysInputElement;
+    private IntegerValuedTextField coveredDaysInputElement;
+    private DoubleValuedTextField medicaidRateInputElement;
+    private DoubleValuedTextField medicaidPatientLiabilityInputElement;
+    private DoubleValuedTextField medicarePaidAmountInputElement;
     private HashMap<String,Double> medicareRates = new HashMap<String, Double>();
-    private DoubleParsableInputElement medicareSequestrationAmount;
+    private DoubleValuedTextField medicareSequestrationAmountInputElement;
 
     //Global color pallete variables.
-    private final Color colorError = Color.web("FF2222", 1);
-    private final Color colorClear = Color.web("000000", 0);
+    private final Color COLOR_ERROR = Color.web("FF2222", 1);
+    private final Color COLOR_CLEAR = Color.web("000000", 0);
 
-    //The following are all FXML tags shared by the FXML document and the controller.
+    //The following are all FXML tags to bind FXML document elements to the controller.
     @FXML
     private TextField inputCoveredDays;
     @FXML
@@ -87,12 +96,15 @@ public class Controller {
     private Text outputPatientOwedError;
 
     /**Initializes the controller. Should be called after the JavaFX default
-     * controller constructor.
+     * controller constructor. JavaFX would call this method automatically if
+     * the FXML annotation was added, but for this implementation we're passing
+     * in an external listener referenced in Main, so we'll need Main to
+     * pass it to us.
      *
      * @param keyEventListener the KeyEventListener being used to send actions
      *                         to this controller.
      */
-    public void init(KeyEventListener keyEventListener) {
+    public void initialize(KeyEventListener keyEventListener) {
 
         //Override default behavior for TextAreas to enable calculation on Enter key press.
         outputMedicarePerDiem.setOnKeyPressed(keyEventListener);
@@ -109,23 +121,29 @@ public class Controller {
         inputMedicareRate.setValue("2018");
 
         //Initialize input elements and add them to the list of available input elements.
-        coveredDays = new IntegerParsableInputElement(inputCoveredDays, inputCoveredDaysError);
-        inputElements.add(coveredDays);
+        coveredDaysInputElement = new IntegerValuedTextField(
+                inputCoveredDays, inputCoveredDaysError);
+        inputElements.add(coveredDaysInputElement);
 
-        coinsuranceDays = new IntegerParsableInputElement(inputCoinsuranceDays, inputCoinsuranceDaysError);
-        inputElements.add(coinsuranceDays);
+        coinsuranceDaysInputElement = new IntegerValuedTextField(
+                inputCoinsuranceDays, inputCoinsuranceDaysError);
+        inputElements.add(coinsuranceDaysInputElement);
 
-        medicaidRate = new DoubleParsableInputElement(inputMedicaidRate, inputMedicaidRateError);
-        inputElements.add(medicaidRate);
+        medicaidRateInputElement = new DoubleValuedTextField(
+                inputMedicaidRate, inputMedicaidRateError);
+        inputElements.add(medicaidRateInputElement);
 
-        medicaidPatientLiability = new DoubleParsableInputElement(inputMedicaidPatientLiability, inputMedicaidPatientLiabilityError);
-        inputElements.add(medicaidPatientLiability);
+        medicaidPatientLiabilityInputElement = new DoubleValuedTextField(
+                inputMedicaidPatientLiability, inputMedicaidPatientLiabilityError);
+        inputElements.add(medicaidPatientLiabilityInputElement);
 
-        medicarePaidAmount = new DoubleParsableInputElement(inputMedicarePaidAmount, inputMedicarePaidAmountError);
-        inputElements.add(medicarePaidAmount);
+        medicarePaidAmountInputElement = new DoubleValuedTextField(
+                inputMedicarePaidAmount, inputMedicarePaidAmountError);
+        inputElements.add(medicarePaidAmountInputElement);
 
-        medicareSequestrationAmount = new DoubleParsableInputElement(inputMedicareSequestrationAmount, inputMedicareSequestrationAmountError);
-        inputElements.add(medicareSequestrationAmount);
+        medicareSequestrationAmountInputElement = new DoubleValuedTextField(
+                inputMedicareSequestrationAmount, inputMedicareSequestrationAmountError);
+        inputElements.add(medicareSequestrationAmountInputElement);
 
         //Bind appropriate FXML buttons to controller methods "calculate" and "reset" respectively
         calculateButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -141,8 +159,6 @@ public class Controller {
                 reset();
             }
         });
-
-
     }
 
     /**
@@ -150,13 +166,13 @@ public class Controller {
      * Displays error text back to the user for any invalid field entries.
      */
     private void validateInput() {
-        for (ParsableInputElement pie : inputElements) {
-            Boolean isInteger = pie instanceof IntegerParsableInputElement;
-            Boolean isDouble = pie instanceof DoubleParsableInputElement;
+        for (ValuedTextField pie : inputElements) {
+            Boolean isInteger = pie instanceof IntegerValuedTextField;
+            Boolean isDouble = pie instanceof DoubleValuedTextField;
             Boolean isValid = true;
             try {
                 pie.parse();
-                pie.getErrorText().setFill(colorClear);
+                pie.getErrorText().setFill(COLOR_CLEAR);
               } catch (NumberFormatException nfe) {
 
                 /* The error message for invalid characters is going to be the same as the error
@@ -165,20 +181,20 @@ public class Controller {
                  * and move on.
                  */
                 if (isInteger) {
-                    ((IntegerParsableInputElement) pie).setValue(-1);
+                    ((IntegerValuedTextField) pie).setValue(-1);
                 }
                 if (isDouble){
-                    ((DoubleParsableInputElement) pie).setValue(-1);
+                    ((DoubleValuedTextField) pie).setValue(-1);
                 }
             }
             if (isInteger) {
                 // All current integer input fields are days.
                 // Can't have billing for zero or negative days.
-                isValid = ((IntegerParsableInputElement) pie).getValue() > 0;
+                isValid = ((IntegerValuedTextField) pie).getValue() > 0;
             }
             if (isDouble) {
                 // No negative amounts should exist here either.
-                isValid = ((DoubleParsableInputElement) pie).getValue() >= 0;
+                isValid = ((DoubleValuedTextField) pie).getValue() >= 0;
             }
             if (!isValid) {
                 if (isInteger){
@@ -187,11 +203,11 @@ public class Controller {
                 if (isDouble) {
                     pie.getErrorText().setText("Must be a number greater than zero");
                 }
-                pie.getErrorText().setFill(colorError);
+                pie.getErrorText().setFill(COLOR_ERROR);
             }
         }
-        // Don't know how the user could store a null in a drop down selector,
-        // but if they do...
+        // Don't know how anything could store a null in a drop down selector,
+        // but it happens...
         if (inputMedicareRate.getValue() == null) {
             inputMedicareRate.setValue("2018");
         }
@@ -202,27 +218,40 @@ public class Controller {
      * values and then performs any calcuations whose validation requirements are
      * met. <p>Sends calculation results to output text fields rounded to hundredths</p>
      */
-    public void calculate(){
+    protected void calculate(){
         clearOutput();
         double output = 0;
         if (checkPerDiemRequirements()) {
-            output = getMedicarePaidPerDiem();
+            output = CrossoverCalculator.getMedicarePaidPerDiem(
+                    coinsuranceDaysInputElement.getValue(),
+                    coveredDaysInputElement.getValue(),
+                    medicarePaidAmountInputElement.getValue(),
+                    medicareRates.get(inputMedicareRate.getValue()),
+                    medicareSequestrationAmountInputElement.getValue()
+            );
             //Hide the error message text by reducing its opacity to 0.
-            outputMedicarePerDiemError.setFill(colorClear);
+            outputMedicarePerDiemError.setFill(COLOR_CLEAR);
             outputMedicarePerDiem.setText("$"+ roundToHundredths(output));
         } else {
-            //Reveal the error message text by increasing its opacity.
-            outputMedicarePerDiemError.setFill(colorError);
+            //Reveal the error message text by setting it's color to global error color.
+            outputMedicarePerDiemError.setFill(COLOR_ERROR);
         }
         if (checkNetOwedRequirements()) {
-            outputMedicaidNetOwedError.setFill(colorClear);
-            outputPatientOwedError.setFill(colorClear);
+            outputMedicaidNetOwedError.setFill(COLOR_CLEAR);
+            outputPatientOwedError.setFill(COLOR_CLEAR);
             /*This code block essentially takes the remaining secondary owed and
             * assigns it first to the patient up to their liability cap, and then
             * to Medicaid.
             */
-            double remainder = getNetOwed();
-            double patientMax = medicaidPatientLiability.getValue();
+            double remainder = CrossoverCalculator.getNetOwed(
+                    coinsuranceDaysInputElement.getValue(),
+                    coveredDaysInputElement.getValue(),
+                    medicaidRateInputElement.getValue(),
+                    medicarePaidAmountInputElement.getValue(),
+                    medicareRates.get(inputMedicareRate.getValue()),
+                    medicareSequestrationAmountInputElement.getValue()
+            );
+            double patientMax = medicaidPatientLiabilityInputElement.getValue();
             //If the remaining owed exceeds the patient cap
             if (remainder - patientMax > 0) {
                 // Medicaid owes the difference
@@ -248,13 +277,13 @@ public class Controller {
             }
             outputPatientOwed.setText("$"+roundToHundredths(output));
         } else {
-            outputMedicaidNetOwedError.setFill(colorError);
-            outputPatientOwedError.setFill(colorError);
+            outputMedicaidNetOwedError.setFill(COLOR_ERROR);
+            outputPatientOwedError.setFill(COLOR_ERROR);
         }
     }
 
     /**
-     * Rounds a Double to the hundredths place and returns as a String.
+     * Helper method to round a double to the hundredths place and return a String.
      * @param aDouble the Double number to be rounded.
      * @return the String conversion of the Double passed in rounded to hundredths.
      */
@@ -270,57 +299,36 @@ public class Controller {
      * @param requirements the array of ParseableInputElements to check
      * @return returns FALSE if any elements are missing. Otherwise returns TRUE
      */
-    private boolean checkRequirements(ParsableInputElement[] requirements) {
+    private boolean checkRequirements(ValuedTextField[] requirements) {
         validateInput();
-        for (ParsableInputElement pie : requirements) {
-            if (pie instanceof DoubleParsableInputElement) {
-                if (((DoubleParsableInputElement) pie).getValue() < 0) {
-                    return false;
+        for (ValuedTextField pie : requirements) {
+            if (pie instanceof DoubleValuedTextField) {
+                if (((DoubleValuedTextField) pie).getValue() >= 0) {
+                    return true;
                 }
-            } else if(pie instanceof IntegerParsableInputElement) {
-                if (((IntegerParsableInputElement) pie).getValue() <= 0) {
-                    return false;
+            } else if(pie instanceof IntegerValuedTextField) {
+                if (((IntegerValuedTextField) pie).getValue() > 0) {
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
-    /**
-     * Calculates the Medicare paid per diem from stored input element values
-     * and returns as a double.
-     * @return Returns the calculation of Medicare paid per diem as a double.
-     */
-    private double getMedicarePaidPerDiem() {
-        return (medicarePaidAmount.getValue() +
-                medicareSequestrationAmount.getValue() +
-                (coinsuranceDays.getValue() *
-                    medicareRates.get(inputMedicareRate.getValue()))) /
-                        coveredDays.getValue();
-    }
+
 
     private boolean checkPerDiemRequirements() {
-        ParsableInputElement[] requirements = {
-                coveredDays, coinsuranceDays,
-                medicarePaidAmount, medicareSequestrationAmount
+        ValuedTextField[] requirements = {
+                coveredDaysInputElement, coinsuranceDaysInputElement,
+                medicarePaidAmountInputElement, medicareSequestrationAmountInputElement
         };
         return checkRequirements(requirements);
     }
 
-    /**
-     * Calculates the total secondary liability owed from stored input element values
-     * and returns as a double.
-     * @return the calculation of secondary liability as a double.
-     */
-    private double getNetOwed() {
-        return (medicaidRate.getValue() -
-                getMedicarePaidPerDiem() +
-                medicareRates.get(inputMedicareRate.getValue()))
-                *coinsuranceDays.getValue();
-    }
+
 
     private boolean checkNetOwedRequirements() {
-        ParsableInputElement[] requirements = {medicaidRate, medicaidPatientLiability};
+        ValuedTextField[] requirements = {medicaidRateInputElement, medicaidPatientLiabilityInputElement};
         return checkRequirements(requirements) && checkPerDiemRequirements();
     }
 
@@ -329,9 +337,9 @@ public class Controller {
      * clears any of their error prompts
      */
     private void reset() {
-        for (ParsableInputElement pie : inputElements) {
+        for (ValuedTextField pie : inputElements) {
             pie.getTextField().setText("");
-            pie.getErrorText().setFill(colorClear);
+            pie.getErrorText().setFill(COLOR_CLEAR);
         }
         clearOutput();
     }
@@ -341,13 +349,13 @@ public class Controller {
      */
     private void clearOutput() {
         outputMedicaidNetOwed.setText(" ");
-        outputMedicaidNetOwedError.setFill(colorClear);
+        outputMedicaidNetOwedError.setFill(COLOR_CLEAR);
 
         outputMedicarePerDiem.setText(" ");
-        outputMedicarePerDiemError.setFill(colorClear);
+        outputMedicarePerDiemError.setFill(COLOR_CLEAR);
 
         outputPatientOwed.setText(" ");
-        outputPatientOwedError.setFill(colorClear);
+        outputPatientOwedError.setFill(COLOR_CLEAR);
     }
 
 }
