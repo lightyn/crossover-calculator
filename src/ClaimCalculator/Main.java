@@ -1,4 +1,4 @@
-package claimCalculator;
+package ClaimCalculator;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +15,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("claimsCalculator.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("claimsCalculatorView.fxml"));
         Parent root = loader.load();
 
-        Controller controller = loader.getController();
+        ClaimCalculatorController controller = loader.getController();
         KeyEventListener keyEventListener = new KeyEventListener(controller);
 
-        controller.init(keyEventListener);
+        controller.initialize(keyEventListener);
         root.setOnKeyPressed(keyEventListener);
 
         if (root instanceof GridPane) {
@@ -42,7 +42,7 @@ public class Main extends Application {
 
         }
         primaryStage.resizableProperty().set(false);
-        primaryStage.setTitle("Medicaid Secondary Liability Calculator");
+        primaryStage.setTitle("Medicaid Secondary Liability CrossoverCalculator");
         primaryStage.setScene(new Scene(root, 510, 448));
         primaryStage.show();
     }

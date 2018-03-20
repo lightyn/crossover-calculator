@@ -1,4 +1,4 @@
-package claimCalculator;
+package ClaimCalculator;
 
 
 import javafx.event.EventHandler;
@@ -10,9 +10,9 @@ import javafx.scene.input.KeyEvent;
  * methods based on key code.
  */
 class KeyEventListener implements EventHandler<KeyEvent> {
-    private final Controller controller;
+    private final ClaimCalculatorController controller;
 
-    public KeyEventListener(Controller controller) {
+    KeyEventListener(ClaimCalculatorController controller) {
         this.controller = controller;
     }
 

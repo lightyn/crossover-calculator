@@ -1,7 +1,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<GridPane fx:controller="claimCalculator.Controller" hgap="10" vgap="10"
+<GridPane fx:controller="ClaimCalculator.ClaimCalculatorController" hgap="10" vgap="10"
           xmlns:fx="http://javafx.com/fxml">
     <style>
         -fx-padding: 10;
